@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sejarah - Nihon no Ryori</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <span class="icon">⛩️</span>
+            <span>Nihon no Ryori</span>
+        </div>
+        <nav>
+            <a href="index.html"><span class="icon">🏠</span></a>
+        </nav>
+    </header>
+
+    <main class="history-main">
+        <h1>Sejarah & Budaya Kuliner Jepang</h1>
+        
+        <section class="history-section">
+            <h2><span class="icon">📜</span> Sejarah Kuliner Jepang</h2>
+            <p>Kuliner Jepang telah berkembang selama ribuan tahun dengan filosofi "washoku" yang menekankan keseimbangan dan keindahan.</p>
+        </section>
+
+        <section class="history-section">
+            <h2><span class="icon">☯️</span> Lima Elemen Dasar</h2>
+            <ul>
+                <li><strong>Gomi</strong> - Lima rasa (manis, asin, asam, pahit, umami)</li>
+                <li><strong>Goshiki</strong> - Lima warna (merah, kuning, hijau, putih, hitam)</li>
+                <li><strong>Goho</strong> - Lima metode memasak</li>
+            </ul>
+        </section>
+
+        <section class="facts-section">
+            <h2><span class="icon">💡</span> 25 Fakta Unik Makanan Jepang</h2>
+            <div class="fact-cards" id="factCards">
+                <!-- Fakta akan dimuat via JavaScript -->
+            </div>
+        </section>
+
+        <section class="culture-section">
+            <h2><span class="icon">🍵</span> Etika Makan</h2>
+            <ul>
+                <li>Selalu ucapkan "Itadakimasu" sebelum makan</li>
+                <li>Jangan tusuk sumpit ke dalam nasi (dianggap ritual pemakaman)</li>
+                <li>Slurp ramen adalah tanda menikmati</li>
+                <li>Jangan makan sambil berjalan</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Nihon no Ryori</p>
+    </footer>
+
+    <script>
+        // Data 25 Fakta Unik dengan FOTO
+        const allFacts = [
+            {icon: "🍣", name: "Sushi", image: "sushi.jpg", fact: "Awalnya sushi adalah metode pengawetan ikan dengan nasi fermentasi dari Asia Tenggara, bukan dari Jepang!"},
+            {icon: "🍜", name: "Ramen", image: "ramen.jpg", fact: "Ramen sebenarnya berasal dari Tiongkok dan menjadi populer di Jepang setelah Perang Dunia II ketika tentara Jepang pulang."},
+            {icon: "🍤", name: "Tempura", image: "tempura.jpg", fact: "Kata 'tempura' berasal dari bahasa Portugis 'tempero' yang berarti 'seasoning', diperkenalkan oleh misionaris Portugis."},
+            {icon: "🐙", name: "Takoyaki", image: "takoyaki.jpg", fact: "Takoyaki ditemukan pada tahun 1935 oleh Tomekichi Endo di Osaka, terinspirasi dari akashiyaki (bola octopus)."},
+            {icon: "🥞", name: "Okonomiyaki", image: "okonomiyaki.jpg", fact: "Nama 'okonomiyaki' berarti 'grill what you like' - panggang apa yang kamu suka, karena bisa pakai berbagai bahan."},
+            {icon: "🥟", name: "Gyoza", image: "gyoza.jpg", fact: "Gyoza Jepang berbeda dari China - versi Jepang lebih kecil, kulitnya lebih tipis, dan biasanya digoreng dengan uap."},
+            {icon: "🍢", name: "Yakitori", image: "yakitori.jpg", fact: "Berbagai bagian ayam digunakan untuk yakitori, termasuk kulit, hati, bahkan jantung! Setiap bagian punya nama berbeda."},
+            {icon: "🍲", name: "Miso Soup", image: "miso soup.jpg", fact: "Ada lebih dari 1.000 jenis miso di Jepang, setiap daerah memiliki varian unik dengan rasa dan warna berbeda."},
+            {icon: "🍜", name: "Udon", image: "udon.jpg", fact: "Prefektur Kagawa dijuluki 'Udon Prefecture' karena penduduknya mengkonsumsi udon paling banyak di Jepang."},
+            {icon: "🍜", name: "Soba", image: "soba.jpg", fact: "Soba tradisional dimakan pada Malam Tahun Baru Jepang sebagai simbol panjang umur, karena mie yang panjang."},
+            {icon: "🍛", name: "Katsudon", image: "katsudon.jpg", fact: "Katsudon sering dimakan oleh petarung sumo sebelum pertandingan untuk energi, dan oleh siswa sebelum ujian untuk keberuntungan."},
+            {icon: "🍖", name: "Tonkatsu", image: "tonkatsu.jpg", fact: "Tonkatsu ditemukan pada tahun 1890-an di Tokyo, terinspirasi dari masakan Eropa, awalnya disebut 'katsuretsu'."},
+            {icon: "🍣", name: "Sashimi", image: "sashimi.jpg", fact: "Pisau sashimi khusus disebut 'yanagiba' harus diasah setiap hari dan hanya digunakan untuk memotong ikan, tidak untuk bahan lain."},
+            {icon: "🥩", name: "Yakiniku", image: "yakiniku.jpg", fact: "Yakiniku sebenarnya berasal dari Korea (bulgogi), diadaptasi menjadi gaya Jepang setelah Perang Dunia II."},
+            {icon: "🍙", name: "Onigiri", image: "onigiri.jpg", fact: "Onigiri sudah ada sejak 1000 tahun yang lalu! Awalnya digunakan sebagai makanan perjalanan untuk samurai."},
+            {icon: "🍳", name: "Tamagoyaki", image: "tamagoyaki.jpg", fact: "Ada dua jenis tamagoyaki: Kanto (manis) dan Kansai (asin), bisa dikenali dari warna dan rasa yang berbeda."},
+            {icon: "🍗", name: "Karaage", image: "karage.jpg", fact: "Karaage berarti 'Chinese frying' karena teknik ini berasal dari Tiongkok, tapi diadaptasi dengan bumbu Jepang."},
+            {icon: "🥚", name: "Chawanmushi", image: "chawanmushi.jpg", fact: "Chawanmushi bisa mengandung berbagai isian tersembunyi seperti ayam, udang, atau ginkgo nuts di dalamnya."},
+            {icon: "🍲", name: "Sukiyaki", image: "sukiyaki.jpg", fact: "Di Jepang, ada dua gaya sukiyaki: Kanto (merebus daging dan sayur bersama) dan Kansai (menggoreng daging dulu)."},
+            {icon: "🍲", name: "Shabu-shabu", image: "https:shabu shabu.jpg", fact: "Nama 'shabu-shabu' adalah onomatope - suara saat mencelupkan daging tipis ke kaldu mendidih!"},
+            {icon: "🍡", name: "Mochi", image: "mochi.jpg", fact: "Setiap tahun, ratusan orang di Jepang tersedak mochi saat Tahun Baru, ada even khusus untuk membantu korban tersedak."},
+            {icon: "🥞", name: "Dorayaki", image: "dorayaki.jpg", fact: "Dorayaki dinamai 'dora' karena bentuknya mirip gendang tradisional Jepang (dora)."},
+            {icon: "🐟", name: "Taiyaki", image: "taiyaki.jpg", fact: "Taiyaki pertama kali dibuat tahun 1909 di Tokyo, awalnya berbentuk bulat seperti imagawayaki sebelum berbentuk ikan."},
+            {icon: "🍦", name: "Matcha Ice", image: "matcha ice.jpg", fact: "Matcha yang digunakan untuk es krim berbeda grade-nya dengan matcha untuk upacara teh - lebih rendah kualitasnya."},
+            {icon: "🍡", name: "Wagashi", image: "wagashi.jpg", fact: "Wagashi mengikuti musim - ada 24 musim kecil dalam kalender Jepang, setiap musim punya wagashi khusus!"}
+        ];
+
+        // Load all facts
+        function loadAllFacts() {
+            const container = document.getElementById('factCards');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            allFacts.forEach((fact, index) => {
+                const factCard = document.createElement('div');
+                factCard.className = 'fact-card';
+                factCard.innerHTML = `
+                    <div class="fact-image">
+                        <img src="${fact.image}" alt="${fact.name}">
+                    </div>
+                    <h3>${fact.icon} ${fact.name}</h3>
+                    <p>${fact.fact}</p>
+                `;
+                container.appendChild(factCard);
+            });
+            
+            console.log(`Loaded ${allFacts.length} facts`);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAllFacts();
+        });
+    </script>
+</body>
+</html>

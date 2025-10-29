@@ -1,0 +1,698 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #DC143C;
+    --secondary-color: #FFD700;
+    --dark-color: #2C3E50;
+    --light-color: #ECF0F1;
+    --text-color: #333;
+    --shadow: 0 2px 10px rgba(0,0,0,0.1);
+    --transition: all 0.3s ease;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+
+/* Header */
+header {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 1rem;
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.icon {
+    font-size: 2rem;
+}
+
+nav a {
+    float: right;
+    color: var(--dark-color);
+    font-size: 1.5rem;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+nav a:hover {
+    color: var(--primary-color);
+    transform: scale(1.1);
+}
+
+/* Main Content */
+main {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 1rem;
+    min-height: calc(100vh - 120px);
+}
+
+/* Homepage Styles */
+.home-main {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 1rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.placeholder-img {
+    font-size: 100px;
+    margin: 20px 0;
+}
+
+.hero-content h1 {
+    color: var(--primary-color);
+    font-size: 2rem;
+    margin: 1rem 0;
+}
+
+.hero-content p {
+    color: var(--text-color);
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.feature-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    text-decoration: none;
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.feature-card .icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.feature-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Menu Page Styles */
+.menu-main {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 1rem;
+}
+
+.menu-main h1 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 1rem;
+}
+
+.menu-item {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+    color: white;
+}
+
+.menu-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+
+.menu-item .food-icon {
+    font-size: 40px;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.menu-item h3 {
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+}
+
+.menu-item p {
+    font-size: 0.8rem;
+    opacity: 0.9;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    overflow-y: auto;
+}
+
+.modal-content {
+    background-color: white;
+    margin: 10% auto;
+    padding: 2rem;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--dark-color);
+}
+
+/* Recipe Page - Sesuai Screenshot */
+.app-container {
+    min-height: 100vh;
+    background: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.recipe-header {
+    background: #DC143C;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+}
+
+.back-link {
+    color: white;
+    text-decoration: none;
+    font-weight: normal;
+}
+
+.header-title {
+    font-weight: bold;
+}
+
+.category-tabs {
+    display: flex;
+    background: #f5f5f5;
+    padding: 10px 5px;
+    gap: 5px;
+    overflow-x: auto;
+}
+
+.category-tabs .tab-btn {
+    background: white;
+    border: 1px solid #ddd;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.category-tabs .tab-btn.active {
+    background: #DC143C;
+    color: white;
+    border-color: #DC143C;
+}
+
+.category-tabs .tab-btn:hover {
+    background: #DC143C;
+    color: white;
+}
+
+.recipe-content {
+    flex: 1;
+    padding: 20px;
+    background: white;
+    overflow-y: auto;
+}
+
+.recipe-detail h2 {
+    color: #DC143C;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.recipe-section {
+    margin-bottom: 25px;
+}
+
+.recipe-section h3 {
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #DC143C;
+    padding-bottom: 5px;
+}
+
+.recipe-section ul,
+.recipe-section ol {
+    margin-left: 20px;
+    line-height: 1.8;
+}
+
+.recipe-section li {
+    margin-bottom: 8px;
+    color: #555;
+}
+
+.recipe-footer {
+    background: #f8f8f8;
+    text-align: center;
+    padding: 15px;
+    color: #666;
+    font-size: 12px;
+    border-top: 1px solid #eee;
+}
+
+/* History Page Styles */
+.history-main {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 1rem;
+}
+
+.history-main h1 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+.history-section {
+    background: var(--light-color);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.history-section h2 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.fact-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.fact-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+}
+
+.fact-card h3 {
+    margin-bottom: 0.5rem;
+}
+
+/* Profile Page Styles */
+.profile-main {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 1rem;
+}
+
+.profile-card {
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.profile-avatar {
+    font-size: 8rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.profile-name {
+    font-size: 1.5rem;
+    color: var(--dark-color);
+    margin-bottom: 1rem;
+}
+
+.profile-bio {
+    color: var(--text-color);
+    line-height: 1.8;
+    margin-bottom: 2rem;
+}
+
+.profile-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 2rem;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.stat .icon {
+    font-size: 2rem;
+    color: var(--primary-color);
+}
+
+.skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.tag {
+    background: var(--primary-color);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+/* Footer */
+footer {
+    background: rgba(255, 255, 255, 0.95);
+    text-align: center;
+    padding: 1rem;
+    color: var(--dark-color);
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 1.5rem;
+    }
+    
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .menu-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    }
+    
+    .fact-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Responsive untuk HP Recipe Page */
+@media (max-width: 480px) {
+    .recipe-header {
+        padding: 12px;
+        font-size: 14px;
+    }
+    
+    .category-tabs {
+        padding: 8px 3px;
+    }
+    
+    .category-tabs .tab-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    
+    .recipe-content {
+        padding: 15px;
+    }
+    
+    .recipe-detail h2 {
+        font-size: 20px;
+    }
+    
+    .recipe-section h3 {
+        font-size: 16px;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease;
+}/* Tambahkan ini di style.css kamu */
+
+/* Recipe Grid Container */
+.search-container {
+    padding: 15px;
+    background: #f8f8f8;
+    border-bottom: 1px solid #eee;
+}
+
+.search-container input {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    font-size: 14px;
+    outline: none;
+}
+
+.search-container input:focus {
+    border-color: #DC143C;
+}
+
+.recipe-grid-container {
+    flex: 1;
+    padding: 15px;
+    background: white;
+    overflow-y: auto;
+}
+
+.recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.recipe-card {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid #dee2e6;
+}
+
+.recipe-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.recipe-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.recipe-card h3 {
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.recipe-card:hover h3 {
+    color: white;
+}
+
+.japanese-name {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.recipe-card:hover .japanese-name {
+    color: rgba(255,255,255,0.8);
+}
+
+.recipe-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+}
+
+.difficulty {
+    background: #28a745;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+}
+
+.difficulty:contains("Medium") {
+    background: #ffc107;
+}
+
+.difficulty:contains("Hard") {
+    background: #dc3545;
+}
+
+.time {
+    color: #666;
+}
+
+.recipe-card:hover .time {
+    color: rgba(255,255,255,0.8);
+}
+
+/* Recipe Detail Modal */
+.recipe-detail-content {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.recipe-detail-content h2 {
+    color: #DC143C;
+    font-size: 24px;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.recipe-info {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.difficulty-badge {
+    background: #28a745;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+}
+
+.time-badge {
+    background: #17a2b8;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+}
+
+.recipe-section {
+    margin-bottom: 20px;
+}
+
+.recipe-section h3 {
+    color: #333;
+    font-size: 16px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #DC143C;
+    padding-bottom: 5px;
+}
+
+.recipe-section ul,
+.recipe-section ol {
+    margin-left: 20px;
+    line-height: 1.6;
+}
+
+.recipe-section li {
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+/* Responsive untuk HP */
+@media (max-width: 480px) {
+    .recipe-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .recipe-card {
+        padding: 12px;
+    }
+    
+    .recipe-icon {
+        font-size: 35px;
+    }
+    
+    .recipe-card h3 {
+        font-size: 14px;
+    }
+    
+    .japanese-name {
+        font-size: 11px;
+    }
+}

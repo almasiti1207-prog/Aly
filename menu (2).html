@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu - Nihon no Ryori</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <span class="icon">⛩️</span>
+            <span>Nihon no Ryori</span>
+        </div>
+        <nav>
+            <a href="index.html"><span class="icon">🏠</span></a>
+        </nav>
+    </header>
+
+    <main class="menu-main">
+        <h1>25 Menu Makanan Jepang</h1>
+        <div class="menu-grid" id="menuGrid">
+            <!-- Menu items akan dimuat via JavaScript -->
+        </div>
+    </main>
+
+    <!-- Modal untuk detail makanan -->
+    <div id="foodModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Nihon no Ryori</p>
+    </footer>
+
+    <script>
+        // Data 25 Makanan dengan FOTO - PASTIKAN SEMUA ADA
+        const foodData = [
+            {id: 1, name: "Sushi", japanese: "寿司", image: "sushi.jpg", meaning: "Rasa asam", ingredients: "Nasi, ikan, nori", taste: "Segar, gurih", origin: "Tokyo"},
+            {id: 2, name: "Ramen", japanese: "ラーメン", image: "ramen.jpg", meaning: "Mie tarik", ingredients: "Mie, kaldu, daging", taste: "Gurih, asin", origin: "Hokkaido"},
+            {id: 3, name: "Tempura", japanese: "天ぷら", image: "tempura.jpg", meaning: "Gorengan", ingredients: "Udang, tepung", taste: "Renyah, gurih", origin: "Nagasaki"},
+            {id: 4, name: "Takoyaki", japanese: "たこ焼き", image: "takoyaki.jpg", meaning: "Gurita panggang", ingredients: "Gurita, tepung", taste: "Manis, gurih", origin: "Osaka"},
+            {id: 5, name: "Okonomiyaki", japanese: "お好み焼き", image: "okonomiyaki.jpg", meaning: "Panggang suka-suka", ingredients: "Tepung, kubis", taste: "Manis, gurih", origin: "Osaka"},
+            {id: 6, name: "Gyoza", japanese: "餃子", image: "gyoza.jpg", meaning: "Dumpling", ingredients: "Daging, sayuran", taste: "Gurih, asin", origin: "China"},
+            {id: 7, name: "Yakitori", japanese: "焼き鳥", image: "yakitori.jpg", meaning: "Ayam bakar", ingredients: "Ayam, tusuk", taste: "Manis, gurih", origin: "Jepang"},
+            {id: 8, name: "Miso Soup", japanese: "味噌汁", image: "miso soup.jpg", meaning: "Sup miso", ingredients: "Miso, dashi", taste: "Asin, gurih", origin: "Jepang"},
+            {id: 9, name: "Udon", japanese: "うどん", image: "udon.jpg", meaning: "Mie tebal", ingredients: "Tepung terigu", taste: "Kenyal, lembut", origin: "Kagawa"},
+            {id: 10, name: "Soba", japanese: "そば", image: "soba.jpg", meaning: "Mie gandum", ingredients: "Tepung gandum", taste: "Kenyal, nutty", origin: "Nagano"},
+            {id: 11, name: "Katsudon", japanese: "カツ丼", image: "katsudon.jpg", meaning: "Nasi cutlet", ingredients: "Daging, telur", taste: "Gurih, manis", origin: "Tokyo"},
+            {id: 12, name: "Tonkatsu", japanese: "トンカツ", image: "tonkatsu.jpg", meaning: "Babi goreng", ingredients: "Babi, panir", taste: "Renyah, juicy", origin: "Tokyo"},
+            {id: 13, name: "Sashimi", japanese: "刺身", image: "sashimi.jpg", meaning: "Ikan mentah", ingredients: "Ikan, wasabi", taste: "Segar, murni", origin: "Jepang"},
+            {id: 14, name: "Yakiniku", japanese: "焼肉", image: "yakiniku.jpg", meaning: "Daging bakar", ingredients: "Daging sapi", taste: "Gurih, asap", origin: "Korea"},
+            {id: 15, name: "Onigiri", japanese: "お握り", image: "onigiri.jpg", meaning: "Nasi kepal", ingredients: "Nasi, nori", taste: "Gurih, asin", origin: "Jepang"},
+            {id: 16, name: "Tamagoyaki", japanese: "卵焼き", image: "tamagoyaki.jpg", meaning: "Telur dadar", ingredients: "Telur, gula", taste: "Manis, gurih", origin: "Tokyo"},
+            {id: 17, name: "Karaage", japanese: "唐揚げ", image: "karage.jpg", meaning: "Ayam goreng", ingredients: "Ayam, bawang", taste: "Gurih, juicy", origin: "Jepang"},
+            {id: 18, name: "Chawanmushi", japanese: "茶碗蒸し", image: "chawanmushi.jpg", meaning: "Telur kukus", ingredients: "Telur, dashi", taste: "Lembut, gurih", origin: "Jepang"},
+            {id: 19, name: "Sukiyaki", japanese: "すき焼き", image: "sukiyaki.jpg", meaning: "Daging masak", ingredients: "Daging, sayur", taste: "Manis, gurih", origin: "Kanto"},
+            {id: 20, name: "Shabu-shabu", japanese: "しゃぶしゃぶ", image: "shabu shabu.jpg", meaning: "Celup daging", ingredients: "Daging tipis", taste: "Ringan, segar", origin: "Osaka"},
+            {id: 21, name: "Mochi", japanese: "餅", image: "mochi.jpg", meaning: "Kue beras", ingredients: "Beras ketan", taste: "Kenyal, manis", origin: "Jepang"},
+            {id: 22, name: "Dorayaki", japanese: "どら焼き", image: "dorayaki.jpg", meaning: "Kue gendang", ingredients: "Pancake, kacang", taste: "Manis, lembut", origin: "Tokyo"},
+            {id: 23, name: "Taiyaki", japanese: "たい焼き", image: "taiyaki.jpg", meaning: "Kue ikan", ingredients: "Adonan, kacang", taste: "Manis, gurih", origin: "Tokyo"},
+            {id: 24, name: "Matcha Ice", japanese: "抹茶アイス", image: "matcha ice.jpg", meaning: "Es teh hijau", ingredients: "Matcha, susu", taste: "Pahit manis", origin: "Kyoto"},
+            {id: 25, name: "Wagashi", japanese: "和菓子", image: "wagashi.jpg", meaning: "Kue Jepang", ingredients: "Tepung, gula", taste: "Manis, artistik", origin: "Kyoto"}
+        ];
+
+        // Load menu items - PASTIKAN JALAN
+        function loadMenuItems() {
+            const menuGrid = document.getElementById('menuGrid');
+            if (!menuGrid) {
+                console.log('Menu grid not found');
+                return;
+            }
+            
+            console.log('Loading menu items...');
+            menuGrid.innerHTML = '';
+            
+            foodData.forEach((food, index) => {
+                const menuItem = document.createElement('div');
+                menuItem.className = 'menu-item';
+                menuItem.innerHTML = `
+                    <div class="menu-image">
+                        <img src="${food.image}" alt="${food.name}" loading="lazy">
+                    </div>
+                    <h3>${food.name}</h3>
+                    <p>${food.japanese}</p>
+                `;
+                menuItem.onclick = () => showFoodDetail(food);
+                menuGrid.appendChild(menuItem);
+                console.log(`Added item ${index + 1}: ${food.name} with image ${food.image}`);
+            });
+            
+            console.log(`Total items loaded: ${foodData.length}`);
+        }
+
+        // Show food detail modal
+        function showFoodDetail(food) {
+            const modal = document.getElementById('foodModal');
+            const modalBody = document.getElementById('modalBody');
+            
+            modalBody.innerHTML = `
+                <div class="food-detail-content">
+                    <div class="food-detail-image">
+                        <img src="${food.image}" alt="${food.name}">
+                    </div>
+                    <h2>${food.name}</h2>
+                    <p class="japanese-name">${food.japanese}</p>
+                    <div class="food-details">
+                        <p><strong>Arti:</strong> ${food.meaning}</p>
+                        <p><strong>Bahan Utama:</strong> ${food.ingredients}</p>
+                        <p><strong>Rasa:</strong> ${food.taste}</p>
+                        <p><strong>Asal:</strong> ${food.origin}</p>
+                    </div>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('foodModal').style.display = 'none';
+        }
+
+        // Initialize - PASTIKAN DIJALANKAN
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, loading menu...');
+            loadMenuItems();
+        });
+
+        // Fallback
+        window.onload = function() {
+            console.log('Window loaded, checking menu...');
+            if (document.getElementById('menuGrid').children.length === 0) {
+                loadMenuItems();
+            }
+        };
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('foodModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

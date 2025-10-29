@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu - Nihon no Ryori</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <span class="icon">⛩️</span>
+            <span>Nihon no Ryori</span>
+        </div>
+        <nav>
+            <a href="index.html"><span class="icon">🏠</span></a>
+        </nav>
+    </header>
+
+    <main class="menu-main">
+        <h1>25 Menu Makanan Jepang</h1>
+        <div class="menu-grid" id="menuGrid">
+            <!-- Menu items akan dimuat via JavaScript -->
+        </div>
+    </main>
+
+    <!-- Modal untuk detail makanan -->
+    <div id="foodModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Nihon no Ryori</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Load menu immediately
+        window.onload = function() {
+            loadMenuItems();
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resep - Nihon no Ryori</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header Merah -->
+        <header class="recipe-header">
+            <div class="header-left">
+                <a href="index.html" class="back-link">Kembali</a>
+            </div>
+            <div class="header-right">
+                <span class="header-title">Resep Makanan</span>
+            </div>
+        </header>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Cari resep..." onkeyup="searchRecipes()">
+        </div>
+
+        <!-- Recipe Grid -->
+        <main class="recipe-grid-container">
+            <div class="recipe-grid" id="recipeGrid">
+                <!-- Recipe items akan dimuat via JavaScript -->
+            </div>
+        </main>
+
+        <!-- Recipe Detail Modal -->
+        <div id="recipeModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeRecipeModal()">&times;</span>
+                <div id="recipeModalBody"></div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="recipe-footer">
+            <p>© 2024 Nihon no Ryori</p>
+        </footer>
+    </div>
+
+    <script>
+        // Data 25 Resep Lengkap
+        const allRecipes = [
+            {
+                id: 1,
+                name: "Sushi",
+                icon: "🍣",
+                japanese: "寿司",
+                difficulty: "Medium",
+                time: "45 menit",
+                ingredients: [
+                    "2 cangkir nasi Jepang",
+                    "3 sendok makan cuka beras",
+                    "1 sendok teh gula",
+                    "1 sendok teh garam",
+                    "4 lembar nori",
+                    "200g ikan salmon segar",
+                    "1 timun",
+                    "1 alpukat",
+                    "Wasabi dan jahe acar"
+                ],
+                steps: [
+                    "Masak nasi hingga matang, angkat dan dinginkan",
+                    "Campur cuka beras, gula, dan garam, aduk rata",
+                    "Campur nasi dengan campuran cuka, aduk perlahan",
+                    "Letakkan nori di bamboo mat (makisu)",
+                    "Sebarkan nasi di atas nori, tinggalkan 2cm di ujung",
+                    "Potong ikan salmon, timun, dan alpukat memanjang",
+                    "Letakkan isian di tengah nasi",
+                    "Gulung perlahan dengan bantuan makisu",
+                    "Potong roll menjadi 6-8 bagian dengan pisau tajam",
+                    "Sajikan dengan wasabi, jahe, dan kecap"
+                ]
+            },
+            {
+                id: 2,
+                name: "Ramen",
+                icon: "🍜",
+                japanese: "ラーメン",
+                difficulty: "Medium",
+                time: "30 menit",
+                ingredients: [
+                    "200g mie ramen",
+                    "500ml kaldu ayam",
+                    "100g daging ayam",
+                    "2 telur rebus",
+                    "2 batang daun bawang",
+                    "2 siung bawang putih",
+                    "1 sendok makan minyak wijen",
+                    "Kecap asin secukupnya"
+                ],
+                steps: [
+                    "Rebus mie ramen sesuai petunjuk kemasan",
+                    "Panaskan kaldu ayam hingga mendidih",
+                    "Potong ayam menjadi dadu kecil",
+                    "Tumis ayam hingga matang dan kecoklatan",
+                    "Siapkan mangkuk, tuang kaldu panas",
+                    "Tambahkan mie yang sudah direbus",
+                    "Tambahkan ayam, telur rebus potong dua",
+                    "Taburi daun bawang dan bawang putih cincang",
+                    "Tambahkan minyak wijen dan kecap asin"
+                ]
+            },
+            {
+                id: 3,
+                name: "Tempura",
+                icon: "🍤",
+                japanese: "天ぷら",
+                difficulty: "Easy",
+                time: "25 menit",
+                ingredients: [
+                    "12 ekor udang ukuran sedang",
+                    "1 cangkir tepung terigu",
+                    "1 cangkir air dingin",
+                    "1 telur",
+                    "Minyak goreng",
+                    "Garam",
+                    "1 lemon"
+                ],
+                steps: [
+                    "Bersihkan udang, sisakan ekor",
+                    "Buat adonan: campur tepung, air dingin, dan telur",
+                    "Panaskan minyak hingga 170°C",
+                    "Celupkan udang ke dalam adonan",
+                    "Goreng hingga kuning keemasan (2-3 menit)",
+                    "Angkat dan tiriskan di kertas minyak",
+                    "Sajikan dengan garam dan irisan lemon"
+                ]
+            },
+            {
+                id: 4,
+                name: "Takoyaki",
+                icon: "🐙",
+                japanese: "たこ焼き",
+                difficulty: "Medium",
+                time: "35 menit",
+                ingredients: [
+                    "100g tepung terigu",
+                    "300ml dashi",
+                    "2 telur",
+                    "100g daging gurita",
+                    "Daun bawang",
+                    "Bawang merah",
+                    "Saus takoyaki",
+                    "Mayones",
+                    "Katsuobushi"
+                ],
+                steps: [
+                    "Campur tepung, dashi, dan telur hingga rata",
+                    "Potong gurita menjadi kotak kecil",
+                    "Panaskan cetakan takoyaki dan olesi minyak",
+                    "Tuang adonan hingga 3/4 penuh",
+                    "Tambahkan gurita, daun bawang, bawang merah",
+                    "Balik dengan tusuk saat setengah matang",
+                    "Masak hingga kecoklatan merata",
+                    "Sajikan dengan saus, mayones, dan katsuobushi"
+                ]
+            },
+            {
+                id: 5,
+                name: "Okonomiyaki",
+                icon: "🥞",
+                japanese: "お好み焼き",
+                difficulty: "Medium",
+                time: "40 menit",
+                ingredients: [
+                    "100g tepung terigu",
+                    "100ml dashi",
+                    "1 telur",
+                    "1/4 kubis",
+                    "50g daging babi",
+                    "Daun bawang",
+                    "Saus okonomiyaki",
+                    "Mayones",
+                    "Katsuobushi"
+                ],
+                steps: [
+                    "Campur tepung, dashi, dan telur",
+                    "Iris kubis tipis-tipis",
+                    "Campur adonan dengan kubis dan daun bawang",
+                    "Panaskan wajan dengan minyak",
+                    "Tuang adonan, bentuk bulat tipis",
+                    "Tambahkan daging babi di atasnya",
+                    "Balik saat bagian bawah kecoklatan",
+                    "Masak hingga matang merata",
+                    "Sajikan dengan saus, mayones, dan katsuobushi"
+                ]
+            },
+            {
+                id: 6,
+                name: "Gyoza",
+                icon: "🥟",
+                japanese: "餃子",
+                difficulty: "Medium",
+                time: "45 menit",
+                ingredients: [
+                    "250g daging ayam cincang",
+                    "1 siung bawang putih",
+                    "1 cm jahe",
+                    "2 batang daun bawang",
+                    "1 sendok makan kecap",
+                    "1 sendok teh minyak wijen",
+                    "20 lembar kulit gyoza",
+                    "Air untuk mengukus"
+                ],
+                steps: [
+                    "Cincang halus bawang putih, jahe, daun bawang",
+                    "Campur ayam dengan bumbu dan sayuran",
+                    "Ambil 1 lembar kulit, isi dengan 1 sendok teh adonan",
+                    "Lipat kulit membentuk setengah bulan",
+                    "Plester bagian tepi dengan jari",
+                    "Panaskan minyak, letakkan gyoza",
+                    "Goreng 2 menit hingga dasarnya kecoklatan",
+                    "Tambahkan air hingga 1/3 tinggi gyoza",
+                    "Tutup dan kukus 3-4 menit hingga matang"
+                ]
+            },
+            {
+                id: 7,
+                name: "Yakitori",
+                icon: "🍢",
+                japanese: "焼き鳥",
+                difficulty: "Easy",
+                time: "25 menit",
+                ingredients: [
+                    "500g daging ayam",
+                    "Bamboo skewers",
+                    "Saus tare (kecap, mirin, gula)",
+                    "Garam",
+                    "Lada"
+                ],
+                steps: [
+                    "Potong ayam menjadi kotak 2cm",
+                    "Rendam bamboo skewers dalam air",
+                    "Tusuk ayam ke dalam skewers",
+                    "Campur kecap, mirin, dan gula untuk saus tare",
+                    "Panaskan grill atau pan",
+                    "Panggang ayam sambil dioles saus tare",
+                    "Balik dan oles hingga matang merata",
+                    "Taburi garam dan lada"
+                ]
+            },
+            {
+                id: 8,
+                name: "Miso Soup",
+                icon: "🍲",
+                japanese: "味噌汁",
+                difficulty: "Easy",
+                time: "15 menit",
+                ingredients: [
+                    "4 sendok makan miso paste",
+                    "500ml dashi",
+                    "100g tahu",
+                    "Rumput laut kering",
+                    "Daun bawang"
+                ],
+                steps: [
+                    "Panaskan dashi hingga mendidih",
+                    "Potong tahu menjadi kotak kecil",
+                    "Rendam rumput laut kering dalam air",
+                    "Kecilkan api, tambahkan miso paste",
+                    "Aduk hingga miso larut (jangan sampai mendidih)",
+                    "Tambahkan tahu dan rumput laut",
+                    "Masak 2-3 menit",
+                    "Taburi daun bawang",
+                    "Sajikan panas"
+                ]
+            },
+            {
+                id: 9,
+                name: "Udon",
+                icon: "🍜",
+                japanese: "うどん",
+                difficulty: "Easy",
+                time: "20 menit",
+                ingredients: [
+                    "200g mie udon",
+                    "500ml dashi",
+                    "Kecap asin",
+                    "Mirin",
+                    "Daun bawang",
+                    "Kamaboko (fish cake)"
+                ],
+                steps: [
+                    "Rebus mie udon hingga mengambang",
+                    "Panaskan dashi dengan kecap dan mirin",
+                    "Iris kamaboko tipis-tipis",
+                    "Iris daun bawang",
+                    "Tiriskan mie, masukkan ke mangkuk",
+                    "Tuang kaldu panas di atas mie",
+                    "Tambahkan kamaboko dan daun bawang"
+                ]
+            },
+            {
+                id: 10,
+                name: "Soba",
+                icon: "🍜",
+                japanese: "そば",
+                difficulty: "Easy",
+                time: "20 menit",
+                ingredients: [
+                    "200g mie soba",
+                    "500ml dashi",
+                    "Kecap asin",
+                    "Mirin",
+                    "Daun bawang",
+                    "Wasabi"
+                ],
+                steps: [
+                    "Rebus mie soba sesuai petunjuk",
+                    "Panaskan dashi dengan kecap dan mirin",
+                    "Iris daun bawang tipis",
+                    "Tiriskan mie, bilas dengan air dingin",
+                    "Masukkan mie ke mangkuk",
+                    "Tuang kaldu panas",
+                    "Taburi daun bawang",
+                    "Sajikan dengan wasabi"
+                ]
+            },
+            {
+                id: 11,
+                name: "Katsudon",
+                icon: "🍛",
+                japanese: "カツ丼",
+                difficulty: "Medium",
+                time: "35 menit",
+                ingredients: [
+                    "200g daging ayam",
+                    "Tepung terigu",
+                    "Tepung panir",
+                    "2 telur",
+                    "2 cangkir nasi",
+                    "Kecap",
+                    "Mirin",
+                    "Gula",
+                    "Daun bawang"
+                ],
+                steps: [
+                    "Potong ayam tipis, pukul-pukul hingga tipis",
+                    "Balur ayam dengan tepung, telur, panir",
+                    "Goreng hingga keemasan, angkat",
+                    "Campur kecap, mirin, gula untuk saus",
+                    "Panaskan wajan, tuang saus",
+                    "Masukkan ayam goreng, tuang telur kocok",
+                    "Masak hingga telur setengah matang",
+                    "Taruh di atas nasi",
+                    "Taburi daun bawang"
+                ]
+            },
+            {
+                id: 12,
+                name: "Tonkatsu",
+                icon: "🍖",
+                japanese: "トンカツ",
+                difficulty: "Easy",
+                time: "30 menit",
+                ingredients: [
+                    "300g daging babi",
+                    "Tepung terigu",
+                    "2 telur",
+                    "Tepung panir",
+                    "Garam",
+                    "Lada",
+                    "Kubis",
+                    "Lemon",
+                    "Saus tonkatsu"
+                ],
+                steps: [
+                    "Potong daging babi tebal 2cm",
+                    "Pukul-pukul daging hingga lebih tipis",
+                    "Bumbui dengan garam dan lada",
+                    "Balur dengan tepung, telur, panir",
+                    "Goreng dalam minyak panas 170°C",
+                    "Goreng 5-7 menit hingga keemasan",
+                    "Angkat dan tiriskan",
+                    "Iris kubis tipis",
+                    "Sajikan dengan kubis, lemon, dan saus"
+                ]
+            },
+            {
+                id: 13,
+                name: "Sashimi",
+                icon: "🍣",
+                japanese: "刺身",
+                difficulty: "Easy",
+                time: "20 menit",
+                ingredients: [
+                    "300g ikan salmon segar",
+                    "Wasabi",
+                    "Kecap asin",
+                    "Jahe acar",
+                    "Daun shiso"
+                ],
+                steps: [
+                    "Pastikan ikan sangat segar (sashimi grade)",
+                    "Gunakan pisau tajam untuk memotong",
+                    "Potong ikan melawan serat dengan sudut 45°",
+                    "Potong tipis-tipis (sekitar 5mm)",
+                    "Atur di piring dengan es",
+                    "Hiasi dengan daun shiso",
+                    "Sajikan dengan wasabi, kecap, jahe acar"
+                ]
+            },
+            {
+                id: 14,
+                name: "Yakiniku",
+                icon: "🥩",
+                japanese: "焼肉",
+                difficulty: "Easy",
+                time: "25 menit",
+                ingredients: [
+                    "500g daging sapi iris tipis",
+                    "Saus yakiniku",
+                    "Sayuran (paprika, bawang bombay)",
+                    "Minyak wijen",
+                    "Bawang putih"
+                ],
+                steps: [
+                    "Marinasi daging dengan saus yakiniku 15 menit",
+                    "Potong sayuran sesuai selera",
+                    "Panaskan grill atau pan tebal",
+                    "Panggang daging 1-2 menit per sisi",
+                    "Panggang sayuran hingga layu",
+                    "Sajikan dengan nasi hangat",
+                    "Taburi wijen sangrai"
+                ]
+            },
+            {
+                id: 15,
+                name: "Onigiri",
+                icon: "🍙",
+                japanese: "お握り",
+                difficulty: "Easy",
+                time: "20 menit",
+                ingredients: [
+                    "2 cangkir nasi",
+                    "Garam",
+                    "Nori",
+                    "Isian (salmon, umeboshi, katsuobushi)"
+                ],
+                steps: [
+                    "Masak nasi hingga matang",
+                    "Basahi tangan dengan air garam",
+                    "Ambil segenggam nasi panas",
+                    "Buat lubang di tengah nasi",
+                    "Isi dengan isian pilihan",
+                    "Tutup kembali dengan nasi",
+                    "Bentuk segitiga atau bulat",
+                    "Bungkus dengan nori"
+                ]
+            },
+            {
+                id: 16,
+                name: "Tamagoyaki",
+                icon: "🍳",
+                japanese: "卵焼き",
+                difficulty: "Medium",
+                time: "15 menit",
+                ingredients: [
+                    "4 telur",
+                    "1 sendok makan gula",
+                    "1 sendok teh kecap",
+                    "1 sendok teh mirin",
+                    "Minyak",
+                    "Garam"
+                ],
+                steps: [
+                    "Kocok telur dengan gula, kecap, mirin",
+                    "Panaskan wajan persegi, olesi minyak",
+                    "Tuang 1/3 adonan telur",
+                    "Gulung saat setengah matang",
+                    "Gesek ke ujung wajan, olesi minyak lagi",
+                    "Tuang adonan lagi, gulung bersama sebelumnya",
+                    "Ulangi hingga adonan habis",
+                    "Tekuk-tepuk gulungan telur",
+                    "Potong-potong dan sajikan"
+                ]
+            },
+            {
+                id: 17,
+                name: "Karaage",
+                icon: "🍗",
+                japanese: "唐揚げ",
+                difficulty: "Easy",
+                time: "30 menit",
+                ingredients: [
+                    "500g ayam potong",
+                    "3 siung bawang putih",
+                    "2 cm jahe",
+                    "Kecap asin",
+                    "Sake",
+                    "Tepung kentang",
+                    "Minyak goreng"
+                ],
+                steps: [
+                    "Marinasi ayam dengan kecap, sake, bawang, jahe 30 menit",
+                    "Tiriskan ayam dari marinasi",
+                    "Balur ayam dengan tepung kentang",
+                    "Panaskan minyak 170°C",
+                    "Goreng ayam 5-7 menit",
+                    "Angkat dan tiriskan",
+                    "Sajikan dengan lemon dan mayones"
+                ]
+            },
+            {
+                id: 18,
+                name: "Chawanmushi",
+                icon: "🥚",
+                japanese: "茶碗蒸し",
+                difficulty: "Medium",
+                time: "25 menit",
+                ingredients: [
+                    "3 telur",
+                    "300ml dashi",
+                    "1 sendok teh kecap",
+                    "Ayam suwir",
+                    "Jamur shiitake",
+                    "Udang",
+                    "Mitsuba"
+                ],
+                steps: [
+                    "Kocok telur dengan dashi dan kecap",
+                    "Saring adonan telur",
+                    "Siapkan mangkuk tahan panas",
+                    "Masukkan ayam, jamur, udang",
+                    "Tuang adonan telur",
+                    "Kukus dengan api kecil 15-20 menit",
+                    "Taburi mitsuba",
+                    "Sajikan panas"
+                ]
+            },
+            {
+                id: 19,
+                name: "Sukiyaki",
+                icon: "🍲",
+                japanese: "すき焼き",
+                difficulty: "Medium",
+                time: "40 menit",
+                ingredients: [
+                    "500g daging sapi iris tipis",
+                    "Tahu",
+                    "Sayuran (bawang bombay, daun bawang)",
+                    "Shirataki",
+                    "Kecap manis",
+                    "Gula",
+                    "Sake",
+                    "Telur"
+                ],
+                steps: [
+                    "Panaskan pot sukiyaki",
+                    "Tuang kecap, gula, sake",
+                    "Masak daging sapi hingga berubah warna",
+                    "Tambahkan sayuran dan tahu",
+                    "Masak hingga sayuran layu",
+                    "Kocok telur di mangkuk terpisah",
+                    "Celup makanan matang ke telur",
+                    "Makan selagi panas"
+                ]
+            },
+            {
+                id: 20,
+                name: "Shabu-shabu",
+                icon: "🍲",
+                japanese: "しゃぶしゃぶ",
+                difficulty: "Easy",
+                time: "30 menit",
+                ingredients: [
+                    "500g daging sapi iris sangat tipis",
+                    "Sayuran (kubis, jamur, daun bawang)",
+                    "Tahu",
+                    "Shirataki",
+                    "Kaldu dashi",
+                    "Saus ponzu",
+                    "Sesami"
+                ],
+                steps: [
+                    "Siapkan kaldu dashi di pot",
+                    "Panaskan hingga mendidih",
+                    "Atur sayuran dan tahu di piring",
+                    "Celup daging ke kaldu mendidih 2-3 detik",
+                    "Angkat dan celup ke saus ponzu",
+                    "Ulangi untuk semua daging",
+                    "Masak sayuran di kaldu yang sama",
+                    "Tambahkan mie shirataki terakhir"
+                ]
+            },
+            {
+                id: 21,
+                name: "Mochi",
+                icon: "🍡",
+                japanese: "餅",
+                difficulty: "Hard",
+                time: "60 menit",
+                ingredients: [
+                    "2 cangkir tepung mochi",
+                    "1.5 cangkir air",
+                    "Gula",
+                    "Tepung ketan",
+                    "Pasta kacang merah"
+                ],
+                steps: [
+                    "Campur tepung mochi dengan air",
+                    "Kukus adonan 20 menit",
+                    "Pukul-pukul adonan dengan kayu",
+                    "Bentuk bulat-bulat",
+                    "Balur dengan tepung ketan",
+                    "Isi dengan pasta kacang",
+                    "Bakar sebentar di atas api"
+                ]
+            },
+            {
+                id: 22,
+                name: "Dorayaki",
+                icon: "🥞",
+                japanese: "どら焼き",
+                difficulty: "Easy",
+                time: "30 menit",
+                ingredients: [
+                    "2 telur",
+                    "80g gula",
+                    "100g tepung terigu",
+                    "1 sendok teh baking powder",
+                    "2 sendok makan air",
+                    "Pasta kacang merah"
+                ],
+                steps: [
+                    "Kocok telur dan gula hingga pucat",
+                    "Tambahkan tepung dan baking powder",
+                    "Tambahkan air, aduk rata",
+                    "Diamkan 10 menit",
+                    "Panaskan wajan antilengket",
+                    "Tuang adonan kecil-kecil",
+                    "Masak hingga muncul gelembung",
+                    "Balik, masak sebentar",
+                    "Oleskan pasta kacang, tumpuk dua"
+                ]
+            },
+            {
+                id: 23,
+                name: "Taiyaki",
+                icon: "🐟",
+                japanese: "たい焼き",
+                difficulty: "Medium",
+                time: "35 menit",
+                ingredients: [
+                    "100g tepung terigu",
+                    "2 sendok makan gula",
+                    "1 telur",
+                    "150ml susu",
+                    "1 sendok teh baking powder",
+                    "Pasta kacang merah"
+                ],
+                steps: [
+                    "Campur tepung, gula, baking powder",
+                    "Kocok telur, tambahkan susu",
+                    "Campur basah dan kering",
+                    "Panaskan cetakan taiyaki",
+                    "Olesi minyak",
+                    "Tuang adonan setengah cetakan",
+                    "Tambahkan pasta kacang",
+                    "Tuang adonan lagi hingga penuh",
+                    "Masak 3-4 menit per sisi"
+                ]
+            },
+            {
+                id: 24,
+                name: "Matcha Ice Cream",
+                icon: "🍦",
+                japanese: "抹茶アイス",
+                difficulty: "Easy",
+                time: "20 menit + freezer",
+                ingredients: [
+                    "300ml krim kental",
+                    "200ml susu",
+                    "100g gula",
+                    "2 sendok makan matcha powder",
+                    "Kuning telur"
+                ],
+                steps: [
+                    "Campur matcha dengan sedikit air panas",
+                    "Kocok kuning telur dengan gula",
+                    "Panaskan susu, jangan sampai mendidih",
+                    "Campur susu dengan telur, masak hingga mengental",
+                    "Tambahkan matcha, aduk rata",
+                    "Kocok krim hingga kaku",
+                    "Campur krim dengan adonan matcha",
+                    "Masukkan freezer 4 jam atau semalam"
+                ]
+            },
+            {
+                id: 25,
+                name: "Wagashi",
+                icon: "🍡",
+                japanese: "和菓子",
+                difficulty: "Hard",
+                time: "90 menit",
+                ingredients: [
+                    "100g tepung beras",
+                    "50g gula",
+                    "Air",
+                    "Pewarna makanan",
+                    "Pasta kacang merah"
+                ],
+                steps: [
+                    "Campur tepung beras dengan air",
+                    "Masak hingga kental dan transparan",
+                    "Bagi adonan, beri pewarna",
+                    "Bentuk sesuai motif musiman",
+                    "Isi dengan pasta kacang",
+                    "Bentuk finishing dengan detail halus"
+                ]
+            }
+        ];
+
+        // Load all recipes
+        function loadAllRecipes() {
+            const grid = document.getElementById('recipeGrid');
+            if (!grid) return;
+            
+            grid.innerHTML = '';
+            
+            allRecipes.forEach(recipe => {
+                const recipeCard = document.createElement('div');
+                recipeCard.className = 'recipe-card';
+                recipeCard.innerHTML = `
+                    <div class="recipe-icon">${recipe.icon}</div>
+                    <h3>${recipe.name}</h3>
+                    <p class="japanese-name">${recipe.japanese}</p>
+                    <div class="recipe-meta">
+                        <span class="difficulty">${recipe.difficulty}</span>
+                        <span class="time">⏱️ ${recipe.time}</span>
+                    </div>
+                `;
+                recipeCard.onclick = () => showRecipeDetail(recipe);
+                grid.appendChild(recipeCard);
+            });
+        }
+
+        // Show recipe detail
+        function showRecipeDetail(recipe) {
+            const modal = document.getElementById('recipeModal');
+            const modalBody = document.getElementById('recipeModalBody');
+            
+            modalBody.innerHTML = `
+                <div class="recipe-detail-content">
+                    <h2>${recipe.icon} ${recipe.name}</h2>
+                    <p class="japanese-name">${recipe.japanese}</p>
+                    <div class="recipe-info">
+                        <span class="difficulty-badge">${recipe.difficulty}</span>
+                        <span class="time-badge">⏱️ ${recipe.time}</span>
+                    </div>
+                    
+                    <div class="recipe-section">
+                        <h3>🛒 Bahan-bahan:</h3>
+                        <ul>
+                            ${recipe.ingredients.map(ing => `<li>${ing}</li>`).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div class="recipe-section">
+                        <h3>📝 Cara Membuat:</h3>
+                        <ol>
+                            ${recipe.steps.map(step => `<li>${step}</li>`).join('')}
+                        </ol>
+                    </div>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        }
+
+        // Close modal
+        function closeRecipeModal() {
+            document.getElementById('recipeModal').style.display = 'none';
+        }
+
+        // Search recipes
+        function searchRecipes() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.recipe-card');
+            
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                if (text.includes(input)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Initialize
+        window.onload = function() {
+            loadAllRecipes();
+        };
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('recipeModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
